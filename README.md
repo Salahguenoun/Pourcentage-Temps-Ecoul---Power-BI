@@ -38,5 +38,11 @@ Le rapport écrit expliquant toute la démarche est disponible dans `Rapport/`.
 
 ## Fichiers
 
-- `Rapport Pourcentage du temps écoulé Power BI.pdf` : description complète du raisonnement
-- `Pourcentage du temps écoulé.pbix` : fichier Power BI
+| Fichier                                      | Description |
+|---------------------------------------------|-------------|
+| `Table_JoursFeries.dax`                     | Table des jours fériés |
+| `Table_Periodes.dax`                        | Table des périodes (année, trimestres, mois) |
+| `Table_PeriodesFiltrees.dax`                | Table nettoyée (mois uniquement) |
+| `Mesure_PourcentageTempsEcoule.dax`         | Mesure DAX principale |
+| `Pourcentage du temps écoulé.pbix`          | Rapport Power BI |
+| `Rapport Pourcentage du temps écoulé Power BI.pdf` | Rapport technique complet |
