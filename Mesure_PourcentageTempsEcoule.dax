@@ -1,0 +1,74 @@
+Pourcentage_Temps_Ecoule = 
+VAR AujourdHui = TODAY()
+
+-- Obtenir les dates selon le contexte de la ligne (année, trimestre, mois)
+VAR DateDebut =
+    COALESCE(
+        SELECTEDVALUE('Périodes_Filtrées'[Date_Début]),  -- Mois
+        MINX(
+            FILTER(
+                'Périodes_Filtrées',
+                'Périodes_Filtrées'[Trimestre] = SELECTEDVALUE('Périodes_Filtrées'[Trimestre])
+                && NOT(ISBLANK('Périodes_Filtrées'[Mois]))
+            ),
+            'Périodes_Filtrées'[Date_Début]
+        ),  -- Trimestre
+        MINX(
+            ALL('Périodes_Filtrées'),
+            'Périodes_Filtrées'[Date_Début]
+        )  -- Année (2025)
+    )
+
+VAR DateFin =
+    COALESCE(
+        SELECTEDVALUE('Périodes_Filtrées'[Date_Fin]),  -- Mois
+        MAXX(
+            FILTER(
+                'Périodes_Filtrées',
+                'Périodes_Filtrées'[Trimestre] = SELECTEDVALUE('Périodes_Filtrées'[Trimestre])
+                && NOT(ISBLANK('Périodes_Filtrées'[Mois]))
+            ),
+            'Périodes_Filtrées'[Date_Fin]
+        ),  -- Trimestre
+        MAXX(
+            ALL('Périodes_Filtrées'),
+            'Périodes_Filtrées'[Date_Fin]
+        )  -- Année (2025)
+    )
+
+-- Déterminer la date jusqu’à laquelle compter les jours écoulés
+VAR DateEffective =
+    SWITCH(
+        TRUE(),
+        AujourdHui < DateDebut, BLANK(),    -- Période future → pas de jours écoulés
+        AujourdHui > DateFin, DateFin,      -- Période passée → DateFin
+        AujourdHui                          -- Période en cours → Aujourd'hui
+    )
+
+-- Calcul du nombre total de jours ouvrés de la période
+VAR JoursTotal =
+    COUNTROWS(
+        FILTER(
+            CALENDAR(DateDebut, DateFin),
+            WEEKDAY([Date], 2) < 6 &&
+            NOT(CONTAINS('Jours_Fériés', 'Jours_Fériés'[Date_Férié], [Date]))
+        )
+    )
+
+-- Calcul du nombre de jours ouvrés écoulés
+VAR JoursEcoules =
+    IF(
+        ISBLANK(DateEffective),
+        0,
+        COUNTROWS(
+            FILTER(
+                CALENDAR(DateDebut, DateEffective),
+                WEEKDAY([Date], 2) < 6 &&
+                NOT(CONTAINS('Jours_Fériés', 'Jours_Fériés'[Date_Férié], [Date]))
+            )
+        )
+    )
+
+-- Retour du pourcentage final
+RETURN
+DIVIDE(JoursEcoules, JoursTotal, 0)

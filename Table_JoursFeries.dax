@@ -1,0 +1,16 @@
+Jours_Fériés = 
+UNION(
+    ROW("Date_Férié", DATE(2025, 1, 1)),    -- Jour de l’An
+    ROW("Date_Férié", DATE(2025, 2, 24)),   -- Férié ajouté (test)
+    ROW("Date_Férié", DATE(2025, 2, 28)),   -- Férié ajouté (test)
+    ROW("Date_Férié", DATE(2025, 4, 21)),   -- Lundi de Pâques
+    ROW("Date_Férié", DATE(2025, 5, 1)),    -- Fête du Travail
+    ROW("Date_Férié", DATE(2025, 5, 8)),    -- Victoire 1945
+    ROW("Date_Férié", DATE(2025, 5, 29)),   -- Ascension
+    ROW("Date_Férié", DATE(2025, 6, 9)),    -- Lundi de Pentecôte
+    ROW("Date_Férié", DATE(2025, 7, 14)),   -- Fête nationale
+    ROW("Date_Férié", DATE(2025, 8, 15)),   -- Assomption
+    ROW("Date_Férié", DATE(2025, 11, 1)),   -- Toussaint
+    ROW("Date_Férié", DATE(2025, 11, 11)),  -- Armistice 1918
+    ROW("Date_Férié", DATE(2025, 12, 25))   -- Noël
+)

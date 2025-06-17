@@ -1,0 +1,5 @@
+Périodes_Filtrées = 
+FILTER(
+    'Périodes',
+    NOT(ISBLANK('Périodes'[Mois]))
+)
